@@ -1,8 +1,7 @@
 from flask import Blueprint
-#from auth.controllers import register, login, logout
+from auth.controllers import login_client_controller
 
 auth_blueprint = Blueprint('auth_bp', __name__)
 
-auth_blueprint.route('/register', methods=['POST'])#(register)
-auth_blueprint.route('/login', methods=['POST'])#(login)
-auth_blueprint.route('/logout', methods=['POST'])#(logout)
+
+auth_blueprint.route('/login', methods=['POST'])(login_client_controller)
