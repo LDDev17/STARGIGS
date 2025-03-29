@@ -1,6 +1,6 @@
 from flask import request, jsonify
-from clients.services import register_client, get_client, update_client, delete_client
-from models.schemas.clientSchema import customer_schema, customers_schema
+from app.Blueprint.clients.services import register_client, get_client, update_client, delete_client, get_all_clients
+from app.models.schemas.clientSchema import customer_schema, customers_schema
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 

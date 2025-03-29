@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from auth.services import authenticate_client
+from app.Blueprint.auth.services import authenticate_client
 
 
 def login_client_controller():

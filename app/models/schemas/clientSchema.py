@@ -1,4 +1,7 @@
 from marshmallow import fields
+from flask_marshmallow import Marshmallow
+
+ma=Marshmallow()
 
 
 class CustomerSchema(ma.Schema):
@@ -7,7 +10,7 @@ class CustomerSchema(ma.Schema):
     last_name = fields.String(required=True)
     username = fields.String(required=True)
     email = fields.Email(required=True)
-    phone = fields.Integer(required=True)
+    phone = fields.String(required=True)
     city = fields.String(required=True)
     password = fields.String(required=True)
 

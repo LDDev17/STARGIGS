@@ -1,6 +1,8 @@
 from database import db
-from models.client import Client
-from werkzeug.security import generate_password_hash
+from app.models.client import Client
+from flask_bcrypt import Bcrypt
+
+bcrypt = Bcrypt()
 
 def register_client(data):
     existing_client = Client.query.filter_by(email=data['email']).first()
@@ -8,7 +10,7 @@ def register_client(data):
     if existing_client:
         return None  # Client already exists
 
-    hashed_password = generate_password_hash(data['password'])
+    hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
 
     # Create and add new client
     new_client = Client(
@@ -44,7 +46,7 @@ def update_client(id, data):
         
         # Only update the password if provided
         if 'password' in data:
-            client.password = generate_password_hash(data['password'])
+            client.password = bcrypt.generate_password_hash(data['password'])
         
         try:
             db.session.commit()

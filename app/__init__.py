@@ -2,6 +2,7 @@ from flask import Flask
 from database import db
 from app.models.schemas import ma
 from config import config
+from flask_jwt_extended import JWTManager
 
 from app.Blueprint.auth.routes import auth_blueprint
 from app.Blueprint.booking.routes import booking_blueprint
@@ -11,7 +12,7 @@ from app.Blueprint.performers.routes import performers_blueprint
 from app.Blueprint.reviews.routes import reviews_blueprint
 from app.Blueprint.search.routes import search_blueprint
 
-def create_app(config_name='default'):
+def create_app(config_name='development'):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
     
@@ -32,8 +33,13 @@ def create_app(config_name='default'):
     app.register_blueprint(reviews_blueprint, url_prefix='/reviews')
     app.register_blueprint(search_blueprint, url_prefix='/search')
 
+    app.config["JWT_SECRET_KEY"] = "your_secret_key_here"
+    app.config["JWT_TOKEN_LOCATION"] = ["headers"]
     
+    jwt = JWTManager(app)
+
     with app.app_context():
+        db.drop_all() #For testing endpoints
         db.create_all()  # Ensure tables are created
 
     print()

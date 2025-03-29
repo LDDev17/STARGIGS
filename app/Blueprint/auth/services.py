@@ -1,6 +1,6 @@
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token
-from models.client import Client
+from app.models.client import Client
 
 bcrypt = Bcrypt()
 
