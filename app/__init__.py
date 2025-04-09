@@ -1,7 +1,15 @@
 from flask import Flask
 from database import db
 from app.models.schemas import ma
-from config import config
+from instance.config import config
+from flask_sqlalchemy import SQLAlchemy
+from marshmallow import Marshmallow
+
+
+db=SQLAlchemy()  # Initialize SQLAlchemy
+ma=Marshmallow()  # Initialize Marshmallow
+
+
 
 def create_app(config_name='default'):
     app = Flask(__name__)
