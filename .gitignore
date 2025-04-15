@@ -1,3 +1,30 @@
-database.py
+# Configuration files
 config.py
-venv
+
+# Virtual environment
+venv/
+
+# Compiled Python files
+*.pyc
+*.pyo
+__pycache__/
+
+# Database files
+instance/*.db
+
+# Logs
+*.log
+
+# IDE-specific files
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Linting and formatting cache
+trunk/
+
+text.txt
+
