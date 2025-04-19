@@ -1,6 +1,7 @@
-from app.models.schemas.reviewSchema import create_review_item
+from app.models.schemas.review_schema import create_review_item
 from app.utils.aws import get_reviews_table
 from botocore.exceptions import ClientError
+from boto3.dynamodb.conditions import Key
 
 def submit_review(data):
     """Handle creating a new review."""
