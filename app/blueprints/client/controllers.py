@@ -3,16 +3,23 @@ from app.blueprints.client.services import register_client, get_client, update_c
 from app.models.schemas.client_schema import customer_schema, customers_schema
 from app.blueprints.auth.services import token_required
 
-
+@token_required
 def register_new_client():
-    data = request.get_json()
+    
+    profile_data = request.get_json()
+    user_info = request.user
 
-    # Register the client using the service
-    client = register_client(data)
+    user = register_client(
+        id = user_info["sub"],
+        email = user_info["sub"],
+        profile_data=profile_data
+    )
 
-    if client:
-        return jsonify({'message': 'Client registered successfully!'}), 201
-    return jsonify({'message': 'Client already exists'}), 400
+    return jsonify ({
+        "message" : "User profile saved",
+        "User": customer_schema.dump(user)
+    })
+
     
 @token_required
 def get_client_profile():

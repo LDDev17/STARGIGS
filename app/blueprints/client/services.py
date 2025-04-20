@@ -2,27 +2,30 @@ from database import db
 from app.models.client import Client
 
 
-def register_client(data):
-    existing_client = Client.query.filter_by(email=data['email']).first()
-    
-    if existing_client:
-        return None  # Client already exists
+def register_client(id, email, profile_data):
+    client = Client.query.filter_by(cognito_id=id).first()
 
+    if client:
+        client.first_name = profile_data.get("first_name", client.first_name)
+        client.last_name = profile_data.get("last_name", client.last_name)
+        client.user_name = profile_data.get("user_name", client.user_name)
+        client.phone = profile_data.get("phone", client.phone)
+        client.city = profile_data.get("city", client.city)
     
-    # Create and add new client
-    new_client = Client(
-        first_name=data['first_name'],
-        last_name=data['last_name'],
-        user_name=data['username'],
-        email=data['email'],
-        phone=data['phone'],
-        city=data['city'],
-    )
-    
-    db.session.add(new_client)
+    else:
+        client = Client(
+            id=id,
+            email=email,
+            first_name=profile_data["first_name"],
+            last_name=profile_data["last_name"],
+            user_name=profile_data["user_name"],
+            phone=profile_data.get("phone"),
+            city=profile_data.get("city")
+        )
+        db.session.add(client)
     db.session.commit()
     
-    return new_client
+    return client
 
 # Service function for getting a client by ID
 def get_client(id):
