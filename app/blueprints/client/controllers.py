@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from app.blueprints.client.services import register_client, get_client, update_client, delete_client, get_all_clients
 from app.models.schemas.client_schema import customer_schema, customers_schema
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from app.blueprints.auth.services import token_required
 
 
 def register_new_client():
@@ -14,9 +14,9 @@ def register_new_client():
         return jsonify({'message': 'Client registered successfully!'}), 201
     return jsonify({'message': 'Client already exists'}), 400
     
-@jwt_required()
+@token_required
 def get_client_profile():
-    client_id = get_jwt_identity()  # Get the client ID from the JWT token
+    client_id = request.user["sub"] # Get the client ID from the token (Cognito uses "sub" for user ID)
     client = get_client(client_id)
 
     if client:
@@ -25,9 +25,9 @@ def get_client_profile():
 
 
 # Controller function for updating a client by ID
-@jwt_required()
+@token_required
 def update_client_profile():
-    client_id = get_jwt_identity()  # Get the client ID from the JWT token
+    client_id = request.user["sub"]  
     data = request.get_json()
 
     updated_client = update_client(client_id, data)
@@ -38,9 +38,9 @@ def update_client_profile():
 
 
 # Controller function for deleting a client by ID
-@jwt_required()
+@token_required
 def delete_client_account():
-    client_id = get_jwt_identity()  # Get the client ID from the JWT token
+    client_id = request.user["sub"]  
 
     result = delete_client(client_id)
 
@@ -49,8 +49,4 @@ def delete_client_account():
     return jsonify({"message": "Client not found"}), 404
 
 
-# Controller function for getting all clients
-@jwt_required()
-def get_all_clients():
-    clients = get_all_clients()
-    return jsonify(customers_schema.dump(clients)), 200
+

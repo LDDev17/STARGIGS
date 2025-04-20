@@ -1,8 +1,6 @@
 from database import db
 from app.models.client import Client
-from flask_bcrypt import Bcrypt
 
-bcrypt = Bcrypt()
 
 def register_client(data):
     existing_client = Client.query.filter_by(email=data['email']).first()
@@ -10,8 +8,7 @@ def register_client(data):
     if existing_client:
         return None  # Client already exists
 
-    hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
-
+    
     # Create and add new client
     new_client = Client(
         first_name=data['first_name'],
@@ -20,7 +17,6 @@ def register_client(data):
         email=data['email'],
         phone=data['phone'],
         city=data['city'],
-        password=hashed_password
     )
     
     db.session.add(new_client)
@@ -44,9 +40,6 @@ def update_client(id, data):
         client.phone = data.get('phone', client.phone)
         client.city = data.get('city', client.city)
         
-        # Only update the password if provided
-        if 'password' in data:
-            client.password = bcrypt.generate_password_hash(data['password'])
         
         try:
             db.session.commit()
@@ -71,6 +64,3 @@ def delete_client(id):
             raise Exception(f"Error deleting client: {str(e)}")
     return False
 
-# Service function to get all clients
-def get_all_clients():
-    return Client.query.all()

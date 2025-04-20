@@ -19,4 +19,4 @@ class PerformerSchema(ma.Schema):
 
 
 performer_schema = PerformerSchema()
-performer_schema = PerformerSchema(many=True, exclude=["password"])
+performers_schema = PerformerSchema(many=True, exclude=["password"])

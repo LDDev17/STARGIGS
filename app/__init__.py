@@ -5,6 +5,13 @@ from instance.config import config
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Marshmallow
 
+from app.blueprints.booking.routes import booking_blueprint
+from app.blueprints.client.routes import client_blueprint
+from app.blueprints.payments.routes import payments_blueprint
+from app.blueprints.performers.routes import performers_blueprint
+from app.blueprints.reviews.routes import review_bp
+from app.blueprints.search.routes import search_blueprint
+
 
 db=SQLAlchemy()  # Initialize SQLAlchemy
 ma=Marshmallow()  # Initialize Marshmallow
@@ -22,6 +29,14 @@ def create_app(config_name='default'):
     
     db.init_app(app)  # Initialize SQLAlchemy
     ma.init_app(app)  # Initialize Marshmallow
+
+    #Registering blueprints
+    app.register_blueprint(booking_blueprint, url_prefix='/booking')
+    app.register_blueprint(client_blueprint, url_prefix='/client')
+    app.register_blueprint(payments_blueprint, url_prefix='/payments')
+    app.register_blueprint(performers_blueprint, url_prefix='/performers')
+    app.register_blueprint(review_bp, url_prefix='/reviews')
+    app.register_blueprint(search_blueprint, url_prefix='/search')
 
     with app.app_context():
         db.create_all()  # Ensure tables are created
