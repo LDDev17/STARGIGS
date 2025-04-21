@@ -5,6 +5,8 @@ from instance.config import config
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Marshmallow
 
+
+from app.blueprints.auth.routes import auth_bp
 from app.blueprints.booking.routes import booking_blueprint
 from app.blueprints.client.routes import client_blueprint
 from app.blueprints.payments.routes import payments_blueprint
@@ -31,6 +33,7 @@ def create_app(config_name='default'):
     ma.init_app(app)  # Initialize Marshmallow
 
     #Registering blueprints
+    app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(booking_blueprint, url_prefix='/booking')
     app.register_blueprint(client_blueprint, url_prefix='/client')
     app.register_blueprint(payments_blueprint, url_prefix='/payments')

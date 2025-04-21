@@ -1,6 +1,6 @@
-from flask import jsonify, request
+from flask import jsonify, request, g
 from app.blueprints.auth.services import token_required
 
 @token_required
 def verify_token():
-    return jsonify({"message": "Token is valid", "user": request.user})
+    return jsonify({"message": "Token is valid", "user": g.user})
