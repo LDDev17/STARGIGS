@@ -1,6 +1,7 @@
 from database import db
 from app.models.booking import Booking
 from datetime import datetime
+from sqlalchemy.exc import SQLAlchemyError
 
 # Create a new booking
 def create_booking(user_id, data):
@@ -17,11 +18,11 @@ def create_booking(user_id, data):
         db.session.add(new_booking)
         db.session.commit()
 
-        return new_booking.to_dict()
-    except Exception as e:
+        return new_booking
+    except (SQLAlchemyError, ValueError) as e:
         db.session.rollback()
-        print("Error creating booking:", str(e))
-        return None
+        raise Exception("Error creating booking:", str(e))
+        
 
 # Update an existing booking
 def update_booking(booking_id, data):
@@ -40,7 +41,7 @@ def update_booking(booking_id, data):
         booking.status = data['status']
 
     db.session.commit()
-    return booking.to_dict()
+    return booking
 
 # Cancel a booking
 def cancel_booking(booking_id):
@@ -54,8 +55,12 @@ def cancel_booking(booking_id):
 
 # Check if performer is available
 def check_performer_availability(performer_id):
-    existing_booking = Booking.query.filter_by(performer_id=performer_id, status="confirmed").first()
-    return existing_booking is None
+    existing_bookings = Booking.query.filter_by(
+        performer_id=performer_id, 
+        status="confirmed"
+        ).all()
+    booked_dates = [booking.event_date.strftime('%Y-%M-%d') for booking in existing_bookings]
+    return booked_dates
 
 
 # Get a booking by ID
