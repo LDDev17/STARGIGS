@@ -3,11 +3,12 @@ import requests
 from functools import wraps
 from flask import request, jsonify, g
 import json
+import os
 
 
-COGNITO_REGION = ''
-USER_POOL_ID = ''
-COGNITO_ISSUER = '' 
+COGNITO_REGION = os.getenv("COGNITO_REGION")
+USER_POOL_ID = os.getenv("USER_POOL_ID")
+COGNITO_ISSUER = os.getenv("COGNITO_ISSUER")
 
 JWKS_URL = f"{COGNITO_ISSUER}/.well-known/jwks.json"
 JWKS = requests.get(JWKS_URL).json()["keys"]
