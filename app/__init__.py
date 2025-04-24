@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from database import db
 from app.models.schemas import ma
 from instance.config import config
@@ -40,6 +41,8 @@ def create_app(config_name='default'):
     app.register_blueprint(performers_blueprint, url_prefix='/performers')
     app.register_blueprint(review_bp, url_prefix='/reviews')
     app.register_blueprint(search_blueprint, url_prefix='/search')
+
+    CORS(app)
 
     with app.app_context():
         db.create_all()  # Ensure tables are created
