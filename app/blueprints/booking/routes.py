@@ -1,6 +1,11 @@
 from flask import Blueprint
-from booking.controllers import create_new_booking, get_booking, update_existing_booking, cancel_existing_booking, check_availability 
-
+from app.blueprints.booking.controllers import (
+ create_new_booking,
+    get_booking,
+    update_existing_booking,
+    cancel_existing_booking,
+    check_availability
+)
 
 booking_blueprint = Blueprint('booking_bp', __name__)
 
