@@ -76,3 +76,6 @@ def delete_client(id):
             raise ServiceError(f"Error deleting client: {str(e)}")
     return False
 
+def get_all_clients():
+    clients = Client.query.all()
+    return clients
