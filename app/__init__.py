@@ -1,11 +1,13 @@
 from flask import Flask
 from database import db
 from app.models.schemas import ma
-from config import config
+from config import Config, config
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask import Flask, render_template
 from flask_socketio import SocketIO
+from flask import Flask
+from flask_mail import Mail
 
 from app.blueprints.booking.routes import booking_blueprint
 from app.blueprints.client.routes import client_blueprint
@@ -23,18 +25,21 @@ socketio = SocketIO(cors_allowed_origins="*")  #Websocket
 
 
 
-def create_app(config_name='default'):
+def create_app(config_class=Config):
     app = Flask(__name__)
-    app.config.from_object(config[config_name])
+    app.config.from_object(config_class)
+    mail = Mail()
 
     
     @app.route("/")
     def hello_world():
-        return "<h1>Welcome to STARGIGS , Your App is working!</h1>"
+        return "<h1>Welcome to STARGIGS</h1>"
     
     
     db.init_app(app)  # Initialize SQLAlchemy
     ma.init_app(app)  # Initialize Marshmallow
+    socketio.init_app(app) # Initialize SocketIO
+    mail.init_app(app)# Initialize Flask-Mail
 
     #Registering blueprints
     app.register_blueprint(booking_blueprint, url_prefix='/booking')
@@ -49,9 +54,9 @@ def create_app(config_name='default'):
         db.create_all()  # Ensure tables are created
 
     print()
-    print('STARGIGS APP is Running')
+    print('YOUR STARGIGS APP IS READY')
     print()
     
-    socketio.init_app(app)
+
 
     return app

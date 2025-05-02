@@ -1,6 +1,7 @@
 from database import db
 from app.models.booking import Booking
 from datetime import datetime
+from app.utils.email import send_booking_email
 
 # Create a new booking
 def create_booking(user_id, data):
@@ -62,3 +63,15 @@ def check_performer_availability(performer_id):
 def get_booking_by_id(booking_id):
     booking = Booking.query.get(booking_id)
     return booking.to_dict() if booking else None
+
+
+
+
+def confirm_booking(booking, user_email, performer_email):
+    subject = "Your Stargigs Booking Confirmation 🎤"
+    body = f"Thanks for booking {booking.performer_name} on {booking.date}!"
+
+#     # Send confirmation email to user
+    send_booking_email(user_email, subject, body)
+#     # Send confirmation email to performer
+    send_booking_email(performer_email, f"New Booking from {booking.user_name}", body)
