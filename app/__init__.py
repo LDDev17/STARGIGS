@@ -6,7 +6,8 @@ from config import config
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask import Flask, render_template
-from flask_socketio import SocketIO
+
+from app.extensions import socketio
 
 
 from app.blueprints.auth.routes import auth_bp
@@ -22,7 +23,7 @@ from app.blueprints.messaging.routes import messaging_blueprint
 
 db=SQLAlchemy()  # Initialize SQLAlchemy
 ma=Marshmallow()  # Initialize Marshmallow
-socketio = SocketIO(cors_allowed_origins="*")  #Websocket
+
 
 
 
@@ -50,6 +51,7 @@ def create_app(config_name='default'):
     app.register_blueprint(messaging_blueprint, url_prefix='/messaging')
 
     CORS(app)
+    
 
     with app.app_context():
         db.create_all()  # Ensure tables are created

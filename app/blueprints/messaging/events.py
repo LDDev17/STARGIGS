@@ -2,7 +2,8 @@
 
 from flask import request
 from flask_socketio import emit, join_room, leave_room
-from app import socketio
+
+from app.extensions import socketio
 
 # Event handler for a new connection
 @socketio.on('connect')
