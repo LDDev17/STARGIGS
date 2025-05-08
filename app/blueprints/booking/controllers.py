@@ -1,9 +1,11 @@
 from flask import request, jsonify, g
 from app.blueprints.auth.services import token_required
 from app.blueprints.booking.services import (
-    create_booking, update_booking, cancel_booking, check_performer_availability, get_booking_by_id
+    create_booking, update_booking, cancel_booking, check_performer_availability, get_booking_by_id, search_bookings
 )
-from app.models.schemas.booking_schema import booking_schema
+from app.models.schemas.booking_schema import booking_schema, bookings_schema
+from app.models.client import Client
+from app.models.performer import Performer
 
 # Create a new booking
 @token_required
@@ -56,5 +58,31 @@ def check_availability():
 def get_booking(booking_id):
     booking = get_booking_by_id(booking_id)
     if booking:
-        return jsonify({"booking": booking_schema.dump(booking)}), 200
+        return jsonify({"booking": booking}), 200
     return jsonify({"error": "Booking not found"}), 404
+
+@token_required
+def search_bookings_controller():
+    user_sub = g.user["sub"]
+    filters = request.args.to_dict()
+
+    # Try to match sub to a Client
+    client = Client.query.filter_by(cognito_id=user_sub).first()
+    performer = Performer.query.filter_by(cognito_id=user_sub).first()
+
+    user_type = None
+    user_id = None
+
+    if client:
+        user_type = "client"
+        user_id = client.id
+    elif performer:
+        user_type = "performer"
+        user_id = performer.id
+    else:
+        return jsonify({"error": "User not found"}), 404
+
+    results = search_bookings(user_id=user_id, role=user_type, filters=filters)
+
+    return jsonify(bookings_schema.dump(results)), 200 
+

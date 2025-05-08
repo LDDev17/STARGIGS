@@ -5,4 +5,5 @@ messaging_blueprint = Blueprint('messaging', __name__)
 
 
 
-from . import events
+
+from ...utils import emails
