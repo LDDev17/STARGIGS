@@ -1,7 +1,7 @@
-from flask import Flask
+from flask import Flask, config
 from database import db
 from app.models.schemas import ma
-from config import config
+# from config import config
 
 def create_app(config_name='default'):
     app = Flask(__name__)
@@ -12,11 +12,11 @@ def create_app(config_name='default'):
         return "<h1>Welcome to STARGIGS , Your App is working!</h1>"
     
     
-    db.init_app(app)  # Initialize SQLAlchemy
-    ma.init_app(app)  # Initialize Marshmallow
+    db.init_app(app)  # Initializes SQLAlchemy
+    ma.init_app(app)  # Initializes Marshmallow
 
     with app.app_context():
-        db.create_all()  # Ensure tables are created
+        db.create_all()  # Ensures tables are created
 
     print()
     print('STARGIGS APP is Running')
