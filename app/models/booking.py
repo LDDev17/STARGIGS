@@ -11,7 +11,7 @@ class Booking(db.Model):
     performer_id = db.Column(db.Integer, db.ForeignKey('performer.id'), nullable=False)
     booking_date = db.Column(db.DateTime, nullable=False)
     status = db.Column(db.String(50), nullable=False)
-    
+    gig_ad=db.Column(db.String(50), nullable=False)
 
     client = db.relationship('Client', backref=db.backref('bookings', lazy=True))
     performer = db.relationship('Performer', backref=db.backref('bookings', lazy=True))
