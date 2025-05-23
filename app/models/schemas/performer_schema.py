@@ -11,6 +11,7 @@ class PerformerSchema(ma.Schema):
     email = fields.Email(required=True)
     phone = fields.Integer(required=True)
     city = fields.String(required=True)
+<<<<<<< HEAD
     password = fields.String(required=True)
 
 
@@ -20,3 +21,16 @@ class PerformerSchema(ma.Schema):
 
 performer_schema = PerformerSchema()
 performers_schema = PerformerSchema(many=True, exclude=["password"])
+=======
+    state = fields.String(required=True)
+    zip_code = fields.Integer(required=True)
+    profile_pic = fields.String()
+
+
+    class Meta: 
+        fields = ("id", "first_name", "last_name","username", "email", "phone", "city", "state", "zip_code", "profile_pic")
+
+
+performer_schema = PerformerSchema()
+performers_schema = PerformerSchema(many=True)
+>>>>>>> b88c7a79fcad71aab134413d103c3957ae0d80c5

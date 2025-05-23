@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from sqlalchemy.orm import  Mapped, mapped_column
+=======
+from sqlalchemy.orm import  Mapped, mapped_column, relationship
+>>>>>>> b88c7a79fcad71aab134413d103c3957ae0d80c5
 from sqlalchemy import Integer, String
 from database import db
 
@@ -13,4 +17,12 @@ class Performer(db.Model):
     email: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
     phone: Mapped[int] = mapped_column(Integer, nullable=False, unique=True)
     city: Mapped[str] = mapped_column(String(100), nullable=False)
+<<<<<<< HEAD
     password: Mapped[str] = mapped_column(String(255), nullable=False)
+=======
+    state: Mapped[str] = mapped_column(String(100), nullable=False)
+    zip_code: Mapped[int] = mapped_column(Integer(10), nullable=False)
+    profile_pic = Mapped[str] = mapped_column(String(500))
+
+    gig_ads = relationship("GigAd", back_populates="performer", cascade="all, delete-orphan")
+>>>>>>> b88c7a79fcad71aab134413d103c3957ae0d80c5

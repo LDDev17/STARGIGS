@@ -1,7 +1,10 @@
 from marshmallow import fields
 from app import ma
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> b88c7a79fcad71aab134413d103c3957ae0d80c5
 
 
 class CustomerSchema(ma.Schema):
@@ -12,12 +15,14 @@ class CustomerSchema(ma.Schema):
     email = fields.Email(required=True)
     phone = fields.Integer(required=True)
     city = fields.String(required=True)
-    password = fields.String(required=True)
+    state = fields.String(required=True)
+    zip_code = fields.Integer(required=True)
+    profile_pic = fields.String()
 
 
     class Meta: 
-        fields = ("id", "first_name", "last_name","username", "email", "phone", "city", "password")
+        fields = ("id", "first_name", "last_name","username", "email", "phone", "city", "state", "zip_code", "profile_pic")
 
 
 customer_schema = CustomerSchema()
-customers_schema = CustomerSchema(many=True, exclude=["password"])
+customers_schema = CustomerSchema(many=True)

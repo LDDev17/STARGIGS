@@ -1,13 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
-from flask_cors import CORS
 from database import db
 from app.models.schemas import ma
-from config import Config, config
-from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
-from flask import Flask, render_template
-from flask_mail import Mail
 from app.extensions import socketio
 
 
@@ -19,33 +13,31 @@ from app.blueprints.performers.routes import performers_blueprint
 from app.blueprints.reviews.routes import review_bp
 from app.blueprints.search.routes import search_blueprint
 from app.blueprints.messaging.routes import messaging_blueprint
-from app.blueprints.gig_ads.routes import gig_ads_blueprint
+
+from instance.config import DevelopmentConfig, TestingConfig, ProductionConfig
+
+config_dict = {
+    'development': DevelopmentConfig,
+    'testing': TestingConfig,
+    'production': ProductionConfig,
+    'default': DevelopmentConfig
+}
 
 
-
-db=SQLAlchemy()  # Initialize SQLAlchemy
-ma=Marshmallow()  # Initialize Marshmallow
-
-
-
-
-def create_app(config_class=Config):
+def create_app(config_name='default'):
     app = Flask(__name__)
-    app.config.from_object(config_class)
-    mail = Mail()
+    # Make sure 'config' is imported or defined
+    app.config.from_object(config_dict[config_name])
 
-    
     @app.route("/")
     def hello_world():
-        return "<h1>Welcome to STARGIGS</h1>"
-    
-    
-    db.init_app(app)  # Initialize SQLAlchemy
-    ma.init_app(app)  # Initialize Marshmallow
-    socketio.init_app(app) # Initialize SocketIO
-    mail.init_app(app)# Initialize Flask-Mail
+        return "<h1>Welcome to STARGIGS!</h1>"
 
-    #Registering blueprints
+    db.init_app(app)
+    ma.init_app(app)
+    CORS(app)
+
+    # Register blueprints
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(booking_blueprint, url_prefix='/booking')
     app.register_blueprint(client_blueprint, url_prefix='/client')
@@ -54,20 +46,12 @@ def create_app(config_class=Config):
     app.register_blueprint(review_bp, url_prefix='/reviews')
     app.register_blueprint(search_blueprint, url_prefix='/search')
     app.register_blueprint(messaging_blueprint, url_prefix='/messaging')
-    app.register_blueprint(gig_ads_blueprint, url_prefix='/gigs')
-
-    CORS(app)
-    
 
     with app.app_context():
         db.create_all()
 
     print('\nSTARGIGS APP is Running\n')
 
-    print()
-    print('YOUR STARGIGS APP IS READY')
-    print()
-    
-
+    socketio.init_app(app)
 
     return app
