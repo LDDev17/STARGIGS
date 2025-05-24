@@ -9,6 +9,9 @@ from config import Config, config
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask import Flask, render_template
+
+from app.extensions import socketio
+
 from flask_socketio import SocketIO
 from flask_mail import Mail
 
