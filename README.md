@@ -29,21 +29,25 @@ Stargigs is a backend application built with **Flask**, **SQLAlchemy**, and **Ma
 │   │   ├── .isort.cfg
 │   │   ├── .markdownlint.yaml
 │   │   ├── ruff.toml
-├── instance/                   # Instance-specific files
-│   ├── stargigs.db             # SQLite database (example)
+├── instance/                   # Instance-specific files (ignored by git)
+│   ├── stargigs.db             # SQLite database (example, ignored by git)
 ```
+
+> **Note:** The `instance/` folder and its contents (such as `stargigs.db`) are ignored by git via `.gitignore`. If you see the database tracked by git, run `git rm --cached instance/stargigs.db` and commit the change.
 
 ---
 
 ## 🚀 Features
 
 - **User Management**: Create, update, and manage user accounts.
-- **Authentication**: Secure login and token-based access using JWT.
+- **Authentication**: Secure login and token-based access using JWT and AWS Cognito.
 - **Payments**: Payment handling logic (in progress or to be integrated).
 - **Performer Profiles**: Manage performer-specific data.
-- **Reviews**: Users can leave feedback and ratings.
+- **Reviews**: Users can leave feedback and ratings (stored in DynamoDB).
 - **Search**: Search functionality across the platform.
+- **Email Notifications**: Booking-related emails sent via Flask-Mail.
 - **Modular Structure**: Organized via Flask Blueprints for scalability.
+- **SocketIO Support**: Real-time features enabled via Flask-SocketIO.
 
 ---
 
@@ -76,6 +80,10 @@ pip install -r requirements.txt
 ### 5. Run the Application
 ```bash
 flask run
+```
+Or, for SocketIO support:
+```bash
+python run.py
 ```
 
 ---
@@ -118,16 +126,35 @@ pytest
 ### Authentication
 - `POST /auth/login`: User login and token generation.
 - `POST /auth/register`: User registration.
+- `GET /auth/verify`: Verify JWT token validity.
 
 ### Bookings
 - `POST /bookings`: Create a new booking (requires authentication).
 - `PUT /bookings/<id>`: Update an existing booking (requires authentication).
-- `DELETE /bookings/<id>`: Cancel a booking (requires authentication).
+- `DELETE /bookings/<id>/cancel`: Cancel a booking (requires authentication).
 - `GET /bookings/<id>`: Retrieve booking details (requires authentication).
+- `GET /bookings/search`: Search bookings for a user.
+- `GET /bookings/availability`: Check performer availability.
 
 ### Performers
 - `GET /performers`: List all performers.
-- `GET /performers/<id>`: Retrieve performer details.
+- `GET /performers/me`: Retrieve current performer's profile.
+- `POST /performers/me`: Create or complete performer profile.
+- `PUT /performers/me`: Update performer profile.
+- `DELETE /performers/me`: Delete performer profile.
+
+### Clients
+- `POST /clients`: Register a new client.
+- `GET /clients/me`: Get current client profile.
+- `PUT /clients/me`: Update client profile.
+- `DELETE /clients/me`: Delete client account.
+
+### Reviews
+- `POST /reviews/`: Submit a new review.
+- `GET /reviews/<performer_id>`: Get all reviews for a performer.
+
+### Search
+- `GET /search/`: Search for performers by filters.
 
 ---
 
@@ -139,6 +166,3 @@ pytest
 
 ---
 
-## 📄 License
-
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).

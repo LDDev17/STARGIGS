@@ -3,6 +3,9 @@ from app.models.gig_ads import GigAd
 from sqlalchemy.exc import SQLAlchemyError
 
 def create_gig_ad(performer_id, data):
+    """
+    Creates a new gig advertisement for a performer.
+    """
     try:
         gig_ad = GigAd(
             performer_id=performer_id,
@@ -23,15 +26,28 @@ def create_gig_ad(performer_id, data):
         raise Exception(f"Error creating Gig Ad: {str(e)}")
 
 def get_all_gig_ads():
+    """
+    Retrieves all gig advertisements from the database.
+    """
     return GigAd.query.all()
 
 def get_gig_ad(ad_id):
+    """
+    Retrieves a single gig advertisement by its unique ID.
+    """
     return GigAd.query.get(ad_id)
 
 def get_gig_ads_by_performer(performer_id):
+    """
+    Retrieves all gig advertisements posted by a specific performer.
+    """
     return GigAd.query.filter_by(performer_id=performer_id).all()
 
 def update_gig_ad(ad_id, data):
+    """
+    Updates an existing gig advertisement with new data.
+    Returns the updated gig ad or None if not found.
+    """
     gig_ad = GigAd.query.get(ad_id)
     if not gig_ad:
         return None
@@ -53,6 +69,11 @@ def update_gig_ad(ad_id, data):
         raise Exception(f"Error updating Gig Ad: {str(e)}")
 
 def delete_gig_ad(ad_id):
+    """
+    Deletes a gig advertisement by its unique ID.
+    Returns True if deletion was successful, False if not found.
+    Raises an exception if a database error occurs.
+    """
     gig_ad = GigAd.query.get(ad_id)
     if not gig_ad:
         return False

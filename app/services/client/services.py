@@ -8,6 +8,7 @@ class ServiceError(Exception):
         self.message = message
         self.status_code = status_code
 
+# Service function to register or update a client profile
 def register_client(id, email, profile_data):
     client = Client.query.filter_by(cognito_id=id).first()
 
@@ -36,11 +37,11 @@ def register_client(id, email, profile_data):
         raise ServiceError(f"Error registering client: {str(e)}")
     return client
 
-# Service function for getting a client by ID
+# Service function for getting a client by Cognito ID
 def get_client(id):
     return Client.query.filter_by(cognito_id=id).first()
 
-# Service function for updating a client by ID
+# Service function for updating a client by Cognito ID
 def update_client(id, data):
     client = get_client(id)
     
@@ -52,7 +53,6 @@ def update_client(id, data):
         client.phone = data.get('phone', client.phone)
         client.city = data.get('city', client.city)
         
-        
         try:
             db.session.commit()
             return client
@@ -62,7 +62,7 @@ def update_client(id, data):
     else:
         return None
 
-# Service function for deleting a client by ID
+# Service function for deleting a client by Cognito ID
 def delete_client(id):
     client = Client.query.filter_by(cognito_id=id).first()
     
@@ -76,6 +76,7 @@ def delete_client(id):
             raise ServiceError(f"Error deleting client: {str(e)}")
     return False
 
+# Service function to get all clients
 def get_all_clients():
     clients = Client.query.all()
     return clients

@@ -52,7 +52,6 @@ def check_availability():
         "available": booked_dates
     }), 200
 
-
 # Get a single booking by ID
 @token_required
 def get_booking(booking_id):
@@ -85,5 +84,4 @@ def search_bookings_controller():
 
     results = search_bookings(user_id=user_id, role=user_type, filters=filters)
 
-    return jsonify(bookings_schema.dump(results)), 200 
-
+    return jsonify(bookings_schema.dump(results)), 200
