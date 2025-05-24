@@ -29,5 +29,6 @@ Thumbs.db
 # Linting and formatting cache
 trunk/
 
-text.py
 .env
+
+text.txt
