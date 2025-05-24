@@ -11,12 +11,14 @@ class PerformerSchema(ma.Schema):
     email = fields.Email(required=True)
     phone = fields.Integer(required=True)
     city = fields.String(required=True)
-    password = fields.String(required=True)
+    state = fields.String(required=True)
+    zip_code = fields.Integer(required=True)
+    profile_pic = fields.String()
 
 
     class Meta: 
-        fields = ("id", "first_name", "last_name","username", "email", "phone", "city", "password")
+        fields = ("id", "first_name", "last_name","username", "email", "phone", "city", "state", "zip_code", "profile_pic")
 
 
 performer_schema = PerformerSchema()
-performer_schema = PerformerSchema(many=True, exclude=["password"])
+performers_schema = PerformerSchema(many=True)

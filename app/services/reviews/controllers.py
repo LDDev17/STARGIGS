@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from app.Blueprint.reviews.services import submit_review, get_reviews_for_performer
+from app.services.reviews.services import submit_review, get_reviews_for_performer
 
 def post_review():
     """POST endpoint to submit a review."""
