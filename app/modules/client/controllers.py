@@ -1,7 +1,7 @@
 from flask import request, jsonify, g
-from app.services.client.services import register_client, get_client, update_client, delete_client
+from app.modules.client.services import register_client, get_client, update_client, delete_client
 from app.models.schemas.client_schema import customer_schema, customers_schema
-from app.services.auth.services import token_required
+from app.modules.auth.services import token_required
 
 @token_required
 def register_new_client():

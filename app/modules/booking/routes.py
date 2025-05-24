@@ -1,5 +1,5 @@
 from flask import Blueprint
-from app.services.booking.controllers import (
+from app.modules.booking.controllers import (
     create_new_booking,
     get_booking,
     update_existing_booking,

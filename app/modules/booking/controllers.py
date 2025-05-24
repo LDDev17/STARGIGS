@@ -1,6 +1,6 @@
 from flask import request, jsonify, g
-from app.services.auth.services import token_required
-from app.services.booking.services import (
+from app.modules.auth.services import token_required
+from app.modules.booking.services import (
     create_booking, update_booking, cancel_booking, check_performer_availability, get_booking_by_id, search_bookings
 )
 from app.models.schemas.booking_schema import booking_schema, bookings_schema

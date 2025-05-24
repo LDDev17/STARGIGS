@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from app.services.reviews.services import submit_review, get_reviews_for_performer
+from app.modules.reviews.services import submit_review, get_reviews_for_performer
 
 # Endpoint to submit a new review
 def post_review():

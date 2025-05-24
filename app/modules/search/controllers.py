@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from app.services.search.services import search_performers_services
+from app.modules.search.services import search_performers_services
 from app.models.schemas.performer_schema import performers_schema
 
 # Controller to handle performer search requests

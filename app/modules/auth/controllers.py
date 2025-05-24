@@ -1,5 +1,5 @@
 from flask import jsonify, request, g
-from app.services.auth.services import token_required
+from app.modules.auth.services import token_required
 
 # Endpoint to verify the validity of a JWT token.
 @token_required
