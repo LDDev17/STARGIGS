@@ -8,6 +8,10 @@ from flask import Flask, render_template
 from flask_mail import Mail
 from app.extensions import socketio
 
+from flask_socketio import SocketIO
+from flask_mail import Mail
+
+
 
 from instance.config import DevelopmentConfig, TestingConfig, ProductionConfig
 
@@ -25,6 +29,7 @@ from app.services.gig_ads.routes import gig_ads_blueprint
 
 db=SQLAlchemy()  # Initialize SQLAlchemy
 ma=Marshmallow()  # Initialize Marshmallow
+socketio = SocketIO(cors_allowed_origins="*")  #Websocket
 
 config_dict = {
     'development': DevelopmentConfig,
