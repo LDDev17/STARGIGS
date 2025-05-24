@@ -9,7 +9,7 @@ from config import Config, config
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask import Flask, render_template
-
+from flask_mail import Mail
 from app.extensions import socketio
 
 from flask_socketio import SocketIO
@@ -25,6 +25,7 @@ from app.blueprints.performers.routes import performers_blueprint
 from app.blueprints.reviews.routes import review_bp
 from app.blueprints.search.routes import search_blueprint
 from app.blueprints.messaging.routes import messaging_blueprint
+from app.blueprints.gig_ads.routes import gig_ads_blueprint
 
 
 
@@ -60,6 +61,7 @@ def create_app(config_class=Config):
     app.register_blueprint(review_bp, url_prefix='/reviews')
     app.register_blueprint(search_blueprint, url_prefix='/search')
     app.register_blueprint(messaging_blueprint, url_prefix='/messaging')
+    app.register_blueprint(gig_ads_blueprint, url_prefix='/gigs')
 
     CORS(app)
     
