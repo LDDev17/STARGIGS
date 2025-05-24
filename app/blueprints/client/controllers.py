@@ -1,5 +1,5 @@
-from flask import request, jsonify
-from app.blueprints.client.services import register_client, get_client, update_client, delete_client, get_all_clients
+from flask import request, jsonify, g
+from app.blueprints.client.services import register_client, get_client, update_client, delete_client
 from app.models.schemas.client_schema import customer_schema, customers_schema
 from app.blueprints.auth.services import token_required
 
@@ -7,18 +7,18 @@ from app.blueprints.auth.services import token_required
 def register_new_client():
     
     profile_data = request.get_json()
-    user_info = request.user
+    user_info = g.user
 
     user = register_client(
         id = user_info["sub"],
-        email = user_info["sub"],
+        email = user_info["email"],
         profile_data=profile_data
     )
 
     return jsonify ({
         "message" : "User profile saved",
-        "User": customer_schema.dump(user)
-    })
+        "user": customer_schema.dump(user)
+    }), 201
 
     
 @token_required

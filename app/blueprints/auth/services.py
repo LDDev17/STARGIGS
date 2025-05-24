@@ -1,13 +1,14 @@
 import jwt
 import requests
 from functools import wraps
-from flask import request, jsonify
+from flask import request, jsonify, g
 import json
+import os
 
 
-COGNITO_REGION = ''
-USER_POOL_ID = ''
-COGNITO_ISSUER = '' 
+COGNITO_REGION = os.getenv("COGNITO_REGION")
+USER_POOL_ID = os.getenv("USER_POOL_ID")
+COGNITO_ISSUER = os.getenv("COGNITO_ISSUER")
 
 JWKS_URL = f"{COGNITO_ISSUER}/.well-known/jwks.json"
 JWKS = requests.get(JWKS_URL).json()["keys"]
@@ -36,19 +37,17 @@ def verify_cognito_token(token):
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = None
+        auth_header = request.headers.get("Authorization", None)
 
-        if "Authorization" in request.headers:
-            token = request.headers["Authorization"].split(" ")[1]
-
-        if not token:
+        if not auth_header:
             return jsonify({"message": "Token not found."}), 401
         
         try:
+            token = auth_header.split(" ")[1]
             user = verify_cognito_token(token)
-            request.user = user
-        except Exception as e:
-            return jsonify({"message": f"Token is invalid:{str(e)}"}), 401
+            g.user = user  # Store user info here
+        except Exception:
+            return jsonify({"message": "Token is invalid."}), 401
         
         return f(*args, **kwargs)
     return decorated

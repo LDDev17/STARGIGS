@@ -1,19 +1,24 @@
 from database import db
 from app.models.performer import Performer
 
+def update_performer(performer, data):
+
+    performer.first_name = data.get('first_name', performer.first_name)
+    performer.last_name = data.get('last_name', performer.last_name)
+    performer.user_name = data.get('user_name', performer.user_name)
+    performer.email = data.get('email', performer.email)
+    performer.phone = data.get('phone', performer.phone)
+    performer.city = data.get('city', performer.city)
+
 def create_or_update_performer_profile(id, email, profile_data):
-    performer = Performer.query.filter_by(id=id).first()
+    performer = Performer.query.filter_by(cognito_id=id).first()
 
     if performer:
-        performer.first_name = profile_data.get("first_name", performer.first_name)
-        performer.last_name = profile_data.get("last_name", performer.last_name)
-        performer.user_name = profile_data.get("user_name", performer.user_name)
-        performer.phone = profile_data.get("phone", performer.phone)
-        performer.city = profile_data.get("city", performer.city)
+        update_performer(performer, profile_data)
     
     else:
         performer = Performer(
-            id=id,
+            cognito_id=id,
             email=email,
             first_name=profile_data["first_name"],
             last_name=profile_data["last_name"],
@@ -27,29 +32,8 @@ def create_or_update_performer_profile(id, email, profile_data):
     return performer
 
 def get_performer(id):
-    return Performer.query.get(id)
+    return Performer.query.filter_by(cognito_id=id).first()    
 
-
-def update_performer(id, data):
-    performer = Performer.query.get(id)
-
-    if performer :
-        performer.first_name = data.get('first_name', performer.first_name)
-        performer.last_name = data.get('last_name', performer.last_name)
-        performer.user_name = data.get('user_name', performer.user_name)
-        performer.email = data.get('email', performer.email)
-        performer.phone = data.get('phone', performer.phone)
-        performer.city = data.get('city', performer.city)
-        
-
-        try:
-            db.session.commit()
-            return performer
-        except Exception as e:
-            db.session.rollback()
-            raise Exception(f"Error updating performer: {str(e)}")
-    
-    return None
 
 def delete_performer(id):
     performer = Performer.query.filter_by(cognito_id=id).first()
@@ -65,5 +49,7 @@ def delete_performer(id):
             raise Exception(f"Error deleting performer: {str(e)}")
     return False
 
-def get_all_performers():
-    return Performer.query.all()
+def get_all_performers(page=1, per_page=10):
+    pagination = Performer.query.paginate(page=page, per_page=per_page, error_out=False)
+    return pagination.items
+    
