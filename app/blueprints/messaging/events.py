@@ -5,6 +5,7 @@ from flask_socketio import emit, join_room, leave_room
 
 from app.extensions import socketio
 
+
 # Event handler for a new connection
 @socketio.on('connect')
 def handle_connect():
