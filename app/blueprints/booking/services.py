@@ -3,8 +3,12 @@ from app.models.client import Client
 from database import db
 from app.models.booking import Booking
 from datetime import datetime
+
 from sqlalchemy.exc import SQLAlchemyError
 from app.utils.email import send_booking_email
+
+from app.utils.email import send_booking_email
+
 
 # Create a new booking
 def create_booking(user_id, data):
@@ -31,6 +35,9 @@ def create_booking(user_id, data):
 
         db.session.add(new_booking)
         db.session.commit()
+
+
+        return new_booking
 
         #Emailing Client
         client_subject = "Stargigs Booking Received 🎉"
@@ -133,3 +140,4 @@ def search_bookings(user_id, role, filters):
         query = query.filter(Booking.event_date <= filters["end_date"])
 
     return query.order_by(Booking.event_date.desc()).all()
+

@@ -9,6 +9,10 @@ from flask import Flask, render_template
 
 from app.extensions import socketio
 
+from flask_socketio import SocketIO
+from flask import Flask
+from flask_mail import Mail
+
 
 from app.blueprints.auth.routes import auth_bp
 from app.blueprints.booking.routes import booking_blueprint
@@ -23,7 +27,7 @@ from app.blueprints.messaging.routes import messaging_blueprint
 
 db=SQLAlchemy()  # Initialize SQLAlchemy
 ma=Marshmallow()  # Initialize Marshmallow
-
+socketio = SocketIO(cors_allowed_origins="*")  #Websocket
 
 
 
