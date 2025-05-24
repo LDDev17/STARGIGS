@@ -6,6 +6,9 @@ from config import Config, config
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask import Flask, render_template
+
+from app.extensions import socketio
+
 from flask_socketio import SocketIO
 from flask import Flask
 from flask_mail import Mail
@@ -55,6 +58,7 @@ def create_app(config_class=Config):
     app.register_blueprint(messaging_blueprint, url_prefix='/messaging')
 
     CORS(app)
+    
 
     with app.app_context():
         db.create_all()  # Ensure tables are created

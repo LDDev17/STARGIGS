@@ -2,7 +2,7 @@ from flask import Blueprint
 from app.blueprints.client.controllers import register_new_client, get_client_profile, update_client_profile, delete_client_account 
 
 
-client_blueprint = Blueprint('client_bp', __name__, strict_slashes=False)
+client_blueprint = Blueprint('client_bp', __name__)
 
 
 client_blueprint.route('/', methods=['POST'])(register_new_client)

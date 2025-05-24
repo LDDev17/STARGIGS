@@ -5,6 +5,7 @@ from app.models.booking import Booking
 from datetime import datetime
 
 from sqlalchemy.exc import SQLAlchemyError
+from app.utils.email import send_booking_email
 
 from app.utils.email import send_booking_email
 
@@ -118,3 +119,25 @@ def confirm_booking(booking, user_email, performer_email):
     send_booking_email(user_email, subject, body)
 #     # Send confirmation email to performer
     send_booking_email(performer_email, f"New Booking from {booking.user_name}", body)
+
+def search_bookings(user_id, role, filters):
+    query = Booking.query
+
+    # Filter by user type
+    if role == "client":
+        query = query.filter_by(client_id=user_id)
+    elif role == "performer":
+        query = query.filter_by(performer_id=user_id)
+
+    # Optional filters
+    if "status" in filters:
+        query = query.filter(Booking.status == filters["status"])
+
+    if "start_date" in filters:
+        query = query.filter(Booking.event_date >= filters["start_date"])
+
+    if "end_date" in filters:
+        query = query.filter(Booking.event_date <= filters["end_date"])
+
+    return query.order_by(Booking.event_date.desc()).all()
+
