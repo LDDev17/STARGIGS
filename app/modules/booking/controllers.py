@@ -1,6 +1,6 @@
 from flask import request, jsonify, g
-from app.services.auth.services import token_required
-from app.services.booking.services import (
+from app.modules.auth.services import token_required
+from app.modules.booking.services import (
     create_booking, update_booking, cancel_booking, check_performer_availability, get_booking_by_id, search_bookings
 )
 from app.models.schemas.booking_schema import booking_schema, bookings_schema
@@ -52,7 +52,6 @@ def check_availability():
         "available": booked_dates
     }), 200
 
-
 # Get a single booking by ID
 @token_required
 def get_booking(booking_id):
@@ -85,5 +84,4 @@ def search_bookings_controller():
 
     results = search_bookings(user_id=user_id, role=user_type, filters=filters)
 
-    return jsonify(bookings_schema.dump(results)), 200 
-
+    return jsonify(bookings_schema.dump(results)), 200

@@ -4,7 +4,11 @@ from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
 
 def submit_review(data):
-    """Handle creating a new review."""
+    """
+    Handle creating a new review.
+    Creates a review item and inserts it into the DynamoDB reviews table.
+    Returns the created review item.
+    """
     try:
         # Create the review item based on provided data
         review_item = create_review_item(
@@ -15,7 +19,7 @@ def submit_review(data):
             event_type=data.get("event_type")
         )
         
-        # Insert into DynamoDB
+        # Insert the review into DynamoDB
         table = get_reviews_table()
         table.put_item(Item=review_item)
         return review_item  # Return created review
@@ -26,7 +30,11 @@ def submit_review(data):
         raise e
 
 def get_reviews_for_performer(performer_id):
-    """Retrieve all reviews for a specific performer."""
+    """
+    Retrieve all reviews for a specific performer.
+    Queries the DynamoDB reviews table for reviews matching the performer_id.
+    Returns a list of review items.
+    """
     try:
         table = get_reviews_table()
         response = table.query(

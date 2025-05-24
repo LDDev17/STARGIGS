@@ -12,6 +12,9 @@ __pycache__/
 # Database files
 instance/*.db
 
+# Ignore the entire instance folder
+instance/
+
 # Logs
 *.log
 
@@ -27,6 +30,5 @@ Thumbs.db
 trunk/
 
 .env
-=======
-text.txt
 
+text.txt

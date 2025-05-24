@@ -8,23 +8,28 @@ from flask import Flask, render_template
 from flask_mail import Mail
 from app.extensions import socketio
 
+from flask_socketio import SocketIO
+from flask_mail import Mail
+
+
 
 from instance.config import DevelopmentConfig, TestingConfig, ProductionConfig
 
-from app.services.auth.routes import auth_bp
-from app.services.booking.routes import booking_blueprint
-from app.services.client.routes import client_blueprint
-from app.services.payments.routes import payments_blueprint
-from app.services.performers.routes import performers_blueprint
-from app.services.reviews.routes import review_bp
-from app.services.search.routes import search_blueprint
-from app.services.messaging.routes import messaging_blueprint
-from app.services.gig_ads.routes import gig_ads_blueprint
+from app.modules.auth.routes import auth_bp
+from app.modules.booking.routes import booking_blueprint
+from app.modules.client.routes import client_blueprint
+from app.modules.payments.routes import payments_blueprint
+from app.modules.performers.routes import performers_blueprint
+from app.modules.reviews.routes import review_bp
+from app.modules.search.routes import search_blueprint
+from app.modules.messaging.routes import messaging_blueprint
+from app.modules.gig_ads.routes import gig_ads_blueprint
 
 
 
 db=SQLAlchemy()  # Initialize SQLAlchemy
 ma=Marshmallow()  # Initialize Marshmallow
+socketio = SocketIO(cors_allowed_origins="*")  #Websocket
 
 config_dict = {
     'development': DevelopmentConfig,

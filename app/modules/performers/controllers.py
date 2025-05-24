@@ -1,10 +1,14 @@
 from flask import request, jsonify, g
-from app.services.performers.services import get_all_performers, delete_performer, get_performer, update_performer, create_or_update_performer_profile
+from app.modules.performers.services import get_all_performers, delete_performer, get_performer, update_performer, create_or_update_performer_profile
 from app.models.schemas.performer_schema import performer_schema, performers_schema
-from app.services.auth.services import token_required
+from app.modules.auth.services import token_required
 
 @token_required
 def complete_performer_profile():
+    """
+    Endpoint to create or update a performer's profile.
+    Uses the authenticated user's info from Cognito.
+    """
     profile_data = request.get_json()
     user_info = g.user
 
@@ -24,7 +28,10 @@ def complete_performer_profile():
 
 @token_required
 def get_performer_profile():
-    performer_id = request.user["sub"] # Cognito user ID
+    """
+    Endpoint to retrieve the current performer's profile using Cognito user ID.
+    """
+    performer_id = g.user["sub"]  # Cognito user ID
     performer = get_performer(performer_id)
 
     if performer:
@@ -34,8 +41,11 @@ def get_performer_profile():
 
 @token_required
 def update_performer_profile():
-    performer_id = request.user["sub"]
-    data=request.get_json()
+    """
+    Endpoint to update the current performer's profile.
+    """
+    performer_id = g.user["sub"]
+    data = request.get_json()
 
     try:
         updated_performer = update_performer(performer_id, data)
@@ -51,7 +61,10 @@ def update_performer_profile():
     
 @token_required
 def delete_my_performer_profile():
-    performer_id = request.user["sub"]
+    """
+    Endpoint to delete the current performer's profile.
+    """
+    performer_id = g.user["sub"]
     success = delete_performer(performer_id)
     try:
         if success:
@@ -62,5 +75,8 @@ def delete_my_performer_profile():
         return jsonify({"error": str(e)}), 500
         
 def get_all():
+    """
+    Endpoint to retrieve all performers.
+    """
     performers = get_all_performers()
     return jsonify(performers_schema.dump(performers)), 200
