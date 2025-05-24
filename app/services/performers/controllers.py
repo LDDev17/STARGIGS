@@ -1,7 +1,7 @@
 from flask import request, jsonify, g
-from app.blueprints.performers.services import get_all_performers, delete_performer, get_performer, update_performer, create_or_update_performer_profile
+from app.services.performers.services import get_all_performers, delete_performer, get_performer, update_performer, create_or_update_performer_profile
 from app.models.schemas.performer_schema import performer_schema, performers_schema
-from app.blueprints.auth.services import token_required
+from app.services.auth.services import token_required
 
 @token_required
 def complete_performer_profile():

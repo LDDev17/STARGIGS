@@ -1,6 +1,6 @@
 from flask import request, jsonify, g
-from app.blueprints.auth.services import token_required
-from app.blueprints.gig_ads.services import (
+from app.services.auth.services import token_required
+from app.services.gig_ads.services import (
     create_gig_ad, get_all_gig_ads, get_gig_ad,
     get_gig_ads_by_performer, update_gig_ad, delete_gig_ad
 )

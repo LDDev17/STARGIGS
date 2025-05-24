@@ -1,17 +1,11 @@
 from flask import request, jsonify, g
-from app.blueprints.auth.services import token_required
-from app.blueprints.booking.services import (
-<<<<<<< HEAD
-    create_booking, update_booking, cancel_booking, check_performer_availability, get_booking_by_id
-)
-from app.models.schemas.booking_schema import booking_schema
-=======
+from app.services.auth.services import token_required
+from app.services.booking.services import (
     create_booking, update_booking, cancel_booking, check_performer_availability, get_booking_by_id, search_bookings
 )
 from app.models.schemas.booking_schema import booking_schema, bookings_schema
 from app.models.client import Client
 from app.models.performer import Performer
->>>>>>> b88c7a79fcad71aab134413d103c3957ae0d80c5
 
 # Create a new booking
 @token_required
@@ -64,12 +58,9 @@ def check_availability():
 def get_booking(booking_id):
     booking = get_booking_by_id(booking_id)
     if booking:
-<<<<<<< HEAD
-        return jsonify({"booking": booking_schema.dump(booking)}), 200
-    return jsonify({"error": "Booking not found"}), 404
-=======
         return jsonify({"booking": booking}), 200
-    return jsonify({"error": "Booking not found"}), 404
+    else:
+        return jsonify({"error": "Booking not found"}), 404
 
 @token_required
 def search_bookings_controller():
@@ -96,4 +87,3 @@ def search_bookings_controller():
 
     return jsonify(bookings_schema.dump(results)), 200 
 
->>>>>>> b88c7a79fcad71aab134413d103c3957ae0d80c5

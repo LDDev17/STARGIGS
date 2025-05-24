@@ -1,5 +1,5 @@
 from flask import Blueprint
-from app.blueprints.performers.controllers import ( 
+from app.services.performers.controllers import ( 
     delete_my_performer_profile, 
     get_all, 
     complete_performer_profile, 

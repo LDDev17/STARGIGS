@@ -1,5 +1,5 @@
 from flask import Blueprint
-from app.blueprints.gig_ads.controller import (
+from app.services.gig_ads.controller import (
     create_gig, get_all_gigs, get_gig, get_my_gigs,
     update_gig, delete_gig
 )

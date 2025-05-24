@@ -1,10 +1,5 @@
 from marshmallow import fields
 from app import ma
-<<<<<<< HEAD
-
-
-=======
->>>>>>> b88c7a79fcad71aab134413d103c3957ae0d80c5
 
 
 class CustomerSchema(ma.Schema):

@@ -1,5 +1,5 @@
 from flask import jsonify, request, g
-from app.blueprints.auth.services import token_required
+from app.services.auth.services import token_required
 
 @token_required
 def verify_token():

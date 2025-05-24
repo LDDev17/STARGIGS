@@ -29,7 +29,7 @@ def verify_cognito_token(token):
         token,
         public_key,
         algorithms=["RS256"],
-        audience= "client_id",
+        audience= os.getenv("COGNITO_CLIENT_ID"),
         issuer=COGNITO_ISSUER
     )
     return payload

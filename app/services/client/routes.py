@@ -1,5 +1,5 @@
 from flask import Blueprint
-from app.blueprints.client.controllers import register_new_client, get_client_profile, update_client_profile, delete_client_account 
+from app.services.client.controllers import register_new_client, get_client_profile, update_client_profile, delete_client_account 
 
 
 client_blueprint = Blueprint('client_bp', __name__)

@@ -1,25 +1,14 @@
-<<<<<<< HEAD
-=======
 from app.models.performer import Performer
 from app.models.client import Client
->>>>>>> b88c7a79fcad71aab134413d103c3957ae0d80c5
 from database import db
 from app.models.booking import Booking
 from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
-<<<<<<< HEAD
-=======
 from app.utils.email import send_booking_email
->>>>>>> b88c7a79fcad71aab134413d103c3957ae0d80c5
 
 # Create a new booking
 def create_booking(user_id, data):
     try:
-<<<<<<< HEAD
-        new_booking = Booking(
-            client_id=user_id,
-            performer_id=data['performer_id'],
-=======
         #Fetching performer info
         performer = Performer.query.get(data['performer_id'])
         if not performer:
@@ -34,7 +23,6 @@ def create_booking(user_id, data):
         new_booking = Booking(
             client_id=user.id,
             performer_id=performer.id,
->>>>>>> b88c7a79fcad71aab134413d103c3957ae0d80c5
             event_date=datetime.strptime(data['event_date'], "%Y-%m-%d"),
             location=data['location'],
             price=data['price'],
@@ -44,10 +32,6 @@ def create_booking(user_id, data):
         db.session.add(new_booking)
         db.session.commit()
 
-<<<<<<< HEAD
-        return new_booking
-    except (SQLAlchemyError, ValueError) as e:
-=======
         #Emailing Client
         client_subject = "Stargigs Booking Received 🎉"
         client_body = (
@@ -69,7 +53,6 @@ def create_booking(user_id, data):
         return new_booking.to_dict()
 
     except Exception as e:
->>>>>>> b88c7a79fcad71aab134413d103c3957ae0d80c5
         db.session.rollback()
         raise Exception("Error creating booking:", str(e))
         
@@ -116,9 +99,6 @@ def check_performer_availability(performer_id):
 # Get a booking by ID
 def get_booking_by_id(booking_id):
     booking = Booking.query.get(booking_id)
-<<<<<<< HEAD
-    return booking.to_dict() if booking else None
-=======
     return booking.to_dict() if booking else None
 
 
@@ -153,4 +133,3 @@ def search_bookings(user_id, role, filters):
         query = query.filter(Booking.event_date <= filters["end_date"])
 
     return query.order_by(Booking.event_date.desc()).all()
->>>>>>> b88c7a79fcad71aab134413d103c3957ae0d80c5

@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from app.blueprints.search.services import search_performers_services
+from app.services.search.services import search_performers_services
 from app.models.schemas.performer_schema import performers_schema
 
 def search_performers_controller():
