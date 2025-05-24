@@ -2,9 +2,13 @@ from flask import Flask
 from flask_cors import CORS
 from database import db
 from app.models.schemas import ma
-from instance.config import config
+from config import Config, config
 from flask_sqlalchemy import SQLAlchemy
-from marshmallow import Marshmallow
+from flask_marshmallow import Marshmallow
+from flask import Flask, render_template
+from flask_socketio import SocketIO
+from flask import Flask
+from flask_mail import Mail
 
 
 from app.blueprints.auth.routes import auth_bp
@@ -14,24 +18,31 @@ from app.blueprints.payments.routes import payments_blueprint
 from app.blueprints.performers.routes import performers_blueprint
 from app.blueprints.reviews.routes import review_bp
 from app.blueprints.search.routes import search_blueprint
+from app.blueprints.messaging.routes import messaging_blueprint
+
 
 
 db=SQLAlchemy()  # Initialize SQLAlchemy
 ma=Marshmallow()  # Initialize Marshmallow
+socketio = SocketIO(cors_allowed_origins="*")  #Websocket
 
 
 
-def create_app(config_name='default'):
+def create_app(config_class=Config):
     app = Flask(__name__)
-    app.config.from_object(config[config_name])
+    app.config.from_object(config_class)
+    mail = Mail()
+
     
     @app.route("/")
     def hello_world():
-        return "<h1>Welcome to STARGIGS , Your App is working!</h1>"
+        return "<h1>Welcome to STARGIGS</h1>"
     
     
     db.init_app(app)  # Initialize SQLAlchemy
     ma.init_app(app)  # Initialize Marshmallow
+    socketio.init_app(app) # Initialize SocketIO
+    mail.init_app(app)# Initialize Flask-Mail
 
     #Registering blueprints
     app.register_blueprint(auth_bp, url_prefix='/auth')
@@ -41,6 +52,7 @@ def create_app(config_name='default'):
     app.register_blueprint(performers_blueprint, url_prefix='/performers')
     app.register_blueprint(review_bp, url_prefix='/reviews')
     app.register_blueprint(search_blueprint, url_prefix='/search')
+    app.register_blueprint(messaging_blueprint, url_prefix='/messaging')
 
     CORS(app)
 
@@ -48,7 +60,9 @@ def create_app(config_name='default'):
         db.create_all()  # Ensure tables are created
 
     print()
-    print('STARGIGS APP is Running')
+    print('YOUR STARGIGS APP IS READY')
     print()
+    
+
 
     return app
