@@ -2,6 +2,9 @@ from flask import Flask
 from flask_cors import CORS
 from database import db
 from app.models.schemas import ma
+
+
+from app.extensions import socketio
 from config import Config, config
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
@@ -10,8 +13,8 @@ from flask import Flask, render_template
 from app.extensions import socketio
 
 from flask_socketio import SocketIO
-from flask import Flask
 from flask_mail import Mail
+
 
 
 from app.blueprints.auth.routes import auth_bp
@@ -28,6 +31,7 @@ from app.blueprints.messaging.routes import messaging_blueprint
 db=SQLAlchemy()  # Initialize SQLAlchemy
 ma=Marshmallow()  # Initialize Marshmallow
 socketio = SocketIO(cors_allowed_origins="*")  #Websocket
+
 
 
 
@@ -66,7 +70,8 @@ def create_app(config_class=Config):
     print()
     print('YOUR STARGIGS APP IS READY')
     print()
-    
+
+    socketio.init_app(app)
 
 
     return app
