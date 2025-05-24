@@ -49,3 +49,4 @@ def get_booking(booking_id):
     if booking:
         return jsonify({"booking": booking}), 200
     return jsonify({"error": "Booking not found"}), 404
+

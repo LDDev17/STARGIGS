@@ -5,7 +5,7 @@ from database import db
 
 
 class Client(db.Model):
-    __tablename__ = "user"
+    __tablename__ = "Client"
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     first_name: Mapped[str] = mapped_column(String(255), nullable=False)
     last_name: Mapped[str] = mapped_column(String(255), nullable=False)
