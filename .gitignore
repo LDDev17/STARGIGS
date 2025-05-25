@@ -9,7 +9,6 @@ venv/
 *.pyo
 __pycache__/
 
-
 # Ignore the entire instance folder
 instance/
 
@@ -24,7 +23,8 @@ instance/
 .DS_Store
 Thumbs.db
 
-
+# Ignore text.py
+text.py
 
 # Environment variables
 .env
@@ -34,4 +34,3 @@ Thumbs.db
 
 # Local test databases
 *.sqlite3
-
