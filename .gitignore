@@ -9,8 +9,6 @@ venv/
 *.pyo
 __pycache__/
 
-# Database files
-instance/*.db
 
 # Logs
 *.log
@@ -23,8 +21,13 @@ instance/*.db
 .DS_Store
 Thumbs.db
 
-# Linting and formatting cache
-trunk/
+
 
 # Environment variables
 .env
+
+# Elastic Beanstalk metadata
+.elasticbeanstalk/
+
+# Local test databases
+*.sqlite3
