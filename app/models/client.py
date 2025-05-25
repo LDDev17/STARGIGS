@@ -32,9 +32,5 @@ class Client(db.Model):
 
     # State where the client resides
     state: Mapped[str] = mapped_column(String(100), nullable=False)
-
-    # Zip code of the client's address
     zip_code: Mapped[int] = mapped_column(Integer, nullable=False)
-
-    # URL or path to the client's profile picture
-    profile_pic: Mapped[str] = mapped_column(String(500))
+    profile_pic: Mapped[str] = mapped_column(String(500), nullable=True)

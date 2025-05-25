@@ -2,9 +2,7 @@
 
 from flask_socketio import SocketIO
 from flask_mail import Mail
-
-# Initialize SocketIO with CORS allowed for all origins
-socketio = SocketIO(cors_allowed_origins="*")
+socketio = SocketIO(cors_allowed_origins="*", async_mode="eventlet")
 
 # Initialize Flask-Mail extension
 mail = Mail()
