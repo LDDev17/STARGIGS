@@ -2,25 +2,42 @@ import os
 from flask import Flask
 from flask_cors import CORS
 from flask_migrate import Migrate
-
+from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 from database import db
 from app.models.schemas import ma
 from app.extensions import socketio, mail
-from config import config
+
+from flask_socketio import SocketIO
+from flask_mail import Mail
+
+
+from instance.config import DevelopmentConfig, TestingConfig, ProductionConfig
+
+# Mapping environment names to config classes
+config = {
+    "development": DevelopmentConfig,
+    "testing": TestingConfig,
+    "production": ProductionConfig,
+    "default": DevelopmentConfig
+}
+
 
 # Blueprints
-from app.blueprints.auth.routes import auth_bp
-from app.blueprints.booking.routes import booking_blueprint
-from app.blueprints.client.routes import client_blueprint
-from app.blueprints.payments.routes import payments_blueprint
-from app.blueprints.performers.routes import performers_blueprint
-from app.blueprints.reviews.routes import review_bp
-from app.blueprints.search.routes import search_blueprint
-from app.blueprints.messaging.routes import messaging_blueprint
-from app.blueprints.gig_ads.routes import gig_ads_blueprint
-
+from app.modules.auth.routes import auth_bp
+from app.modules.booking.routes import booking_blueprint
+from app.modules.client.routes import client_blueprint
+from app.modules.payments.routes import payments_blueprint
+from app.modules.performers.routes import performers_blueprint
+from app.modules.reviews.routes import review_bp
+from app.modules.search.routes import search_blueprint
+from app.modules.messaging.routes import messaging_blueprint
+from app.modules.gig_ads.routes import gig_ads_blueprint
 
 migrate= Migrate()
+db=SQLAlchemy()  # Initialize SQLAlchemy
+ma=Marshmallow()  # Initialize Marshmallow
+socketio = SocketIO(cors_allowed_origins="*")  #Websocket
 
 def create_app():
     app = Flask(__name__)
