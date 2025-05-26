@@ -3,7 +3,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_migrate import Migrate
 
-from database import db
+from database import db  
 from app.models.schemas import ma
 from app.extensions import socketio, mail
 from config import config
